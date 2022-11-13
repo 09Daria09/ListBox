@@ -32,20 +32,28 @@ BOOL Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 		wsprintf(str, TEXT("%d"), num);
 		SendMessage(hList1, LB_ADDSTRING, 0, LPARAM(str));
 	}
+
+	HMENU hMenu = LoadMenu(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MENU1));
+	// ѕрисоединим меню к главному окну приложени€
+	SetMenu(hwnd, hMenu);
+
+
 	return TRUE;
 }
 
 void Cls_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
+
 }
 
-BOOL CALLBACK DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+BOOL CALLBACK DlgProc(HWND hwnd,  UINT message, WPARAM wParam, LPARAM lParam)
 {
 	TCHAR str[100];
 	switch (message)
 	{
 		HANDLE_MSG(hwnd, WM_CLOSE, Cls_OnClose);
 		HANDLE_MSG(hwnd, WM_INITDIALOG, Cls_OnInitDialog);
+		
 	case WM_COMMAND:
 
 		if (LOWORD(wParam) == IDOK)
@@ -96,7 +104,8 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 
 		}
-
+	case ID_MENU_EXIT:
+		EndDialog(hwnd, 0);
 	}
 	return FALSE;
 }
